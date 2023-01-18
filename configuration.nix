@@ -1,5 +1,12 @@
 { config, pkgs, lib, nixpkgsPath, ... }:
-
+let
+    mypkgs = import (builtins.fetchTarball {
+        url = "https://github.com/NixOS/nixpkgs/archive/ee01de29d2f58d56b1be4ae24c24bd91c5380cea.tar.gz";
+    }) { crossSystem = { system = "armv6l-linux"; };};
+  
+    myPkg = mypkgs.fish;
+    myhx = mypkgs.helix;
+in
 {
   imports = [
     (nixpkgsPath + "/nixos/modules/profiles/minimal.nix")
@@ -11,4 +18,12 @@
   boot.supportedFilesystems = lib.mkForce [ "vfat" ];
 
   boot.kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
+  environment.defaultPackages = [ myhx ];
+
+  # programs.fish.enable = true;
+  users.users.razvan = {
+    isNormalUser = true;
+    extraGroups = [ "wheel" ];
+  };
+  users.defaultUserShell = myPkg;
 }
