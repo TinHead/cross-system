@@ -6,6 +6,7 @@ let
   
     myPkg = mypkgs.fish;
     myhx = mypkgs.helix;
+    mykernel = mypkgs.linuxKernel.kernels.linux_rpi1;
 in
 {
   imports = [
@@ -17,7 +18,7 @@ in
   # Let's simplify this by removing all unneeded filesystems from the image.
   boot.supportedFilesystems = lib.mkForce [ "vfat" ];
 
-  boot.kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
+  boot.kernelPackages = lib.mkDefault mykernel; #lib.mkDefault pkgs.linuxKernel.kernels.linux_rpi1;
   environment.defaultPackages = [ myhx ];
 
   # programs.fish.enable = true;
