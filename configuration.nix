@@ -11,16 +11,27 @@ in
 {
   imports = [
     (nixpkgsPath + "/nixos/modules/profiles/minimal.nix")
-    (nixpkgsPath + "/nixos/modules/profiles/installation-device.nix")
+#    (nixpkgsPath + "/nixos/modules/profiles/headless.nix")
+    (./installation-device.nix)
   ];
+
+  disabledModules =
+    [ (nixpkgsPath + "/nixos/modules/profiles/all-hardware.nix")
+      (nixpkgsPath + "nixos/modules/profiles/base.nix")
+    ];
 
   # cifs-utils fails to cross-compile
   # Let's simplify this by removing all unneeded filesystems from the image.
   boot.supportedFilesystems = lib.mkForce [ "vfat" ];
+  boot.initrd.includeDefaultModules = false;
+  boot.initrd.kernelModules = [ "ext4" "vfat" ];
 
   boot.kernelPackages = lib.mkDefault mykernel; #lib.mkDefault pkgs.linuxKernel.kernels.linux_rpi1;
-  environment.defaultPackages = [ myhx ];
-
+  environment.systemPackages = [ myhx ];
+  environment.defaultPackages = [];
+  xdg.icons.enable  = false;
+  xdg.mime.enable   = false;
+  xdg.sounds.enable = false;
   # programs.fish.enable = true;
   users.users.razvan = {
     isNormalUser = true;
