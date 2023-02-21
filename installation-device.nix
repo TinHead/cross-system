@@ -80,7 +80,7 @@ with lib;
     networking.wireless.userControlled.enable = true;
     networking.wireless.networks = {
       Darker = {
-        pskRaw = "5ef5ec73dad49b88a8199415574bf258ba54301d3d0878377b93365335b03a07";
+        pskRaw = "5ef5ec73dad49b88a8199415574bf258ba54301d3d0878377b93365335b09a07";
       };
     };
  #   systemd.services.wpa_supplicant.wantedBy = mkOverride 50 [];
